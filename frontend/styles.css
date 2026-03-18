@@ -1,0 +1,166 @@
+/* Reset & Typography */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+:root {
+    --bg-primary: #0f172a;
+    --acc-primary: #8b5cf6;
+    --acc-secondary: #ec4899;
+    --text-primary: #f8fafc;
+    --text-muted: #94a3b8;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --success: #10b981;
+    --danger: #ef4444;
+}
+
+body {
+    background: radial-gradient(circle at top right, #1e1b4b, var(--bg-primary), #020617);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Utilities */
+.hidden { display: none !important; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-end { display: flex; justify-content: flex-end; }
+.text-center { text-align: center; }
+
+h1, h2, h3 { font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+h3 { font-size: 1.5rem; }
+.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+.mb-lg { margin-bottom: 2rem; }
+.mb-md { margin-bottom: 1rem; }
+.mb-sm { margin-bottom: 0.5rem; }
+.mt-lg { margin-top: 2rem; }
+.w-100 { width: 100%; }
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--acc-primary), var(--acc-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Base UI Components (Glassmorphism & Gradients) */
+.glass-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* Forms & Inputs */
+.input-group { margin-bottom: 1.25rem; }
+.input-group label {
+    display: block; font-weight: 600; font-size: 0.85rem;
+    letter-spacing: 0.5px; margin-bottom: 0.5rem; color: var(--text-muted);
+}
+input, select {
+    width: 100%; padding: 0.75rem 1rem;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--card-border);
+    border-radius: 8px; color: var(--text-primary);
+    font-size: 1rem; outline: none; transition: all 0.2s;
+}
+input:focus, select:focus {
+    border-color: var(--acc-primary); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+/* Buttons */
+.btn {
+    padding: 0.75rem 1.5rem; border: none; border-radius: 8px;
+    font-weight: 600; cursor: pointer; transition: all 0.3s;
+    font-size: 1rem;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-primary { background: linear-gradient(135deg, var(--acc-primary), var(--acc-secondary)); color: #fff; }
+.btn-secondary { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid var(--card-border); }
+.btn-secondary:hover { background: rgba(255,255,255,0.2); }
+.btn-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+.btn-danger:hover { background: var(--danger); color: #fff; }
+
+/* Layouts */
+.screen { min-height: 100vh; width: 100%; padding: 2rem; }
+.login-card { width: 100%; max-width: 400px; margin: auto; }
+.container { max-width: 1200px; margin: 0 auto; width: 100%; }
+
+.glass-nav {
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--card-border);
+    padding: 1rem 2rem; border-radius: 12px;
+    display: flex; align-items: center; justify-content: space-between;
+}
+
+.layout-grid {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+@media (max-width: 800px) {
+    .layout-grid { grid-template-columns: 1fr; }
+}
+
+.quizzes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+.quiz-item-card {
+    padding: 1.5rem; background: rgba(255,255,255,0.03); 
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px; transition: 0.3s;
+    display: flex; flex-direction: column; height: 100%;
+}
+.quiz-item-card:hover { border-color: var(--acc-primary); transform: translateY(-3px); }
+.quiz-meta { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+.badge {
+    padding: 0.25rem 0.5rem; border-radius: 9999px;
+    font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+    background: rgba(255,255,255,0.1);
+}
+.badge.easy { color: #4ade80; background: rgba(74, 222, 128, 0.15); }
+.badge.medium { color: #facc15; background: rgba(250, 204, 21, 0.15); }
+.badge.hard { color: #ef4444; background: rgba(239, 68, 68, 0.15); }
+
+/* Quiz Player UI */
+.quiz-player { width: 100%; max-width: 700px; }
+.progress-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--acc-primary), var(--acc-secondary)); transition: width 0.4s ease; }
+
+.options-grid { display: flex; flex-direction: column; gap: 1rem; }
+.option-item {
+    padding: 1rem; background: rgba(255,255,255,0.05);
+    border: 1px solid var(--card-border);
+    border-radius: 8px; cursor: pointer; transition: 0.2s;
+    font-size: 1rem; color: var(--text-primary);
+    text-align: left;
+}
+.option-item:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+.option-item.selected { background: rgba(139, 92, 246, 0.2); border-color: var(--acc-primary); }
+.option-item.correct { background: rgba(16, 185, 129, 0.2); border-color: var(--success); }
+.option-item.wrong { background: rgba(239, 68, 68, 0.2); border-color: var(--danger); }
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeIn 0.5s ease forwards; }
+.fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+.toast {
+    position: fixed; bottom: 20px; right: 20px;
+    padding: 1rem 1.5rem; background: rgba(255,255,255,0.9);
+    color: #000; font-weight: 600; border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    z-index: 1000; animation: fadeInUp 0.3s forwards;
+}

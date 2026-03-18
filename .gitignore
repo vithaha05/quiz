@@ -1,0 +1,23 @@
+# Compiled/cached
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Environments
+.env
+.venv
+venv/
+env/
+ENV/
+
+# Database
+*.sqlite3
+
+# Static / Media
+staticfiles/
+media/
+
+# OS
+.DS_Store
+Thumbs.db

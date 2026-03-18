@@ -1,0 +1,12 @@
+django>=4.2,<5.0
+djangorestframework
+djangorestframework-simplejwt
+drf-spectacular
+django-environ
+psycopg2-binary
+django-cors-headers
+google-generativeai
+gunicorn
+redis
+django-redis
+python-dotenv

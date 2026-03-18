@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Quiz App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- Login Section -->
+    <main id="login-section" class="screen flex-center">
+        <div class="glass-card login-card fade-in">
+            <h1 class="gradient-text text-center">AI Quiz App</h1>
+            <p class="text-center subtitle mb-lg">Log in to unleash intelligent learning</p>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" value="admin" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" value="admin" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Sign In</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Dashboard Section -->
+    <main id="dashboard-section" class="screen hidden fade-in">
+        <header class="glass-nav">
+            <h2 class="gradient-text">Quiz Dashboard</h2>
+            <button id="logout-btn" class="btn btn-danger">Log Out</button>
+        </header>
+
+        <div class="container layout-grid mt-lg">
+            <!-- Create Quiz Card -->
+            <aside class="glass-card fade-in-up" style="animation-delay: 0.1s;">
+                <h3 class="mb-md">✨ Create AI Quiz</h3>
+                <form id="create-quiz-form">
+                    <div class="input-group">
+                        <label for="quiz-title">Title</label>
+                        <input type="text" id="quiz-title" placeholder="e.g. History 101" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="quiz-topic">Topic</label>
+                        <input type="text" id="quiz-topic" placeholder="e.g. World War II" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="quiz-difficulty">Difficulty</label>
+                        <select id="quiz-difficulty" required>
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="quiz-count">Question Count</label>
+                        <input type="number" id="quiz-count" min="1" max="10" value="5" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" id="create-quiz-btn">
+                        Generate with AI
+                    </button>
+                </form>
+            </aside>
+
+            <!-- Quiz List -->
+            <section class="glass-card fade-in-up" style="animation-delay: 0.2s;">
+                <div class="flex-between mb-md">
+                    <h3>Available Quizzes</h3>
+                    <button id="refresh-quizzes-btn" class="btn btn-secondary">Refresh</button>
+                </div>
+                <!-- Quizzes Grid -->
+                <div id="quizzes-grid" class="quizzes-grid">
+                    <div class="loading-spinner hidden" id="quizzes-loader"></div>
+                    <!-- Quiz Cards will be injected here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Active Quiz Area -->
+    <main id="active-quiz-section" class="screen hidden fade-in">
+        <header class="glass-nav">
+            <h2 id="active-quiz-title" class="gradient-text">Active Quiz</h2>
+            <button id="quit-quiz-btn" class="btn btn-danger">Quit Attempt</button>
+        </header>
+
+        <div class="container mt-lg flex-center">
+            <div class="glass-card quiz-player fade-in-up">
+                <div class="progress-bar mb-md">
+                    <div class="progress-fill" id="quiz-progress-fill"></div>
+                </div>
+                <p id="question-tracker" class="subtitle mb-sm">Question 1 of 5</p>
+                <h3 id="question-text" class="mb-lg">Loading question...</h3>
+
+                <div id="options-container" class="options-grid mb-lg">
+                    <!-- Options injected here -->
+                </div>
+
+                <div class="flex-end">
+                    <button id="next-question-btn" class="btn btn-primary" disabled>Next</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
