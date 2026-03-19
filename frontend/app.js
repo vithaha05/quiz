@@ -3,6 +3,7 @@ const API_URL = 'http://127.0.0.1:8000/api';
 // State
 let state = {
     token: localStorage.getItem('access_token'),
+    user: JSON.parse(localStorage.getItem('user') || 'null'),
     quizzes: [],
     activeAttemptId: null,
     activeQuizId: null,
@@ -15,11 +16,17 @@ let state = {
 const els = {
     toast: document.getElementById('toast'),
     loginSection: document.getElementById('login-section'),
+    registerSection: document.getElementById('register-section'),
     dashboardSection: document.getElementById('dashboard-section'),
     activeQuizSection: document.getElementById('active-quiz-section'),
 
     loginForm: document.getElementById('login-form'),
+    toRegisterBtn: document.getElementById('to-register-btn'),
+    registerForm: document.getElementById('register-form'),
+    toLoginBtn: document.getElementById('to-login-btn'),
+
     logoutBtn: document.getElementById('logout-btn'),
+    welcomeUser: document.getElementById('welcome-user'),
 
     createQuizForm: document.getElementById('create-quiz-form'),
     createQuizBtn: document.getElementById('create-quiz-btn'),
@@ -53,17 +60,32 @@ async function apiFetch(endpoint, options = {}) {
     };
     try {
         const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+        const isJson = res.headers.get('content-type')?.includes('application/json');
+        const rData = isJson ? await res.json() : null;
+
         if (res.status === 401 && state.token) {
             logout();
             showToast('Session expired. Please login again.', true);
             return null;
         }
-        const isJson = res.headers.get('content-type')?.includes('application/json');
-        const data = isJson ? await res.json() : null;
-        if (!res.ok) throw new Error(data?.message || data?.detail || `Error ${res.status}`);
-        return data;
+
+        if (!res.ok || (rData && rData.error)) {
+            // Handle nested validation errors for registration
+            let msg = rData?.message || rData?.detail || `Error ${res.status}`;
+            if (rData?.details && typeof rData.details === 'object') {
+                const firstField = Object.keys(rData.details)[0];
+                const detailMsg = rData.details[firstField];
+                msg = `${firstField}: ${Array.isArray(detailMsg) ? detailMsg[0] : detailMsg}`;
+            }
+            showToast(msg, true);
+            throw new Error(msg);
+        }
+
+        return rData.hasOwnProperty('data') ? rData.data : rData;
     } catch (err) {
-        showToast(err.message, true);
+        if (!err.message.includes('Session expired')) {
+            showToast(err.message, true);
+        }
         throw err;
     }
 }
@@ -71,6 +93,7 @@ async function apiFetch(endpoint, options = {}) {
 // Navigation
 function showScreen(screen) {
     els.loginSection.classList.add('hidden');
+    els.registerSection.classList.add('hidden');
     els.dashboardSection.classList.add('hidden');
     els.activeQuizSection.classList.add('hidden');
     screen.classList.remove('hidden');
@@ -79,11 +102,18 @@ function showScreen(screen) {
 function init() {
     if (state.token) {
         showScreen(els.dashboardSection);
+        if (state.user) {
+            els.welcomeUser.textContent = `Welcome, ${state.user.first_name}!`;
+        }
         loadQuizzes();
     } else {
         showScreen(els.loginSection);
     }
 }
+
+// Toggle logic
+els.toRegisterBtn.onclick = (e) => { e.preventDefault(); showScreen(els.registerSection); };
+els.toLoginBtn.onclick = (e) => { e.preventDefault(); showScreen(els.loginSection); };
 
 // Login Handler
 els.loginForm.addEventListener('submit', async (e) => {
@@ -91,28 +121,72 @@ els.loginForm.addEventListener('submit', async (e) => {
     const btn = e.target.querySelector('button');
     btn.textContent = 'Logging in...'; btn.disabled = true;
     try {
-        const data = await apiFetch('/auth/login/', {
+        const res = await apiFetch('/auth/login/', {
             method: 'POST',
             body: JSON.stringify({
-                username: els.loginForm.username.value,
+                email: els.loginForm.email.value,
                 password: els.loginForm.password.value
             })
         });
-        state.token = data.access;
-        localStorage.setItem('access_token', data.access);
-        showScreen(els.dashboardSection);
-        loadQuizzes();
+        handleAuthSuccess(res);
         showToast('Logged in successfully!');
-    } catch (err) {
-        // error handled in apiFetch
-    } finally {
+    } catch (err) { }
+    finally {
         btn.textContent = 'Sign In'; btn.disabled = false;
     }
 });
 
+// Register Handler
+els.registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = 'Creating account...'; btn.disabled = true;
+    try {
+        const res = await apiFetch('/auth/register/', {
+            method: 'POST',
+            body: JSON.stringify({
+                first_name: document.getElementById('reg-first-name').value,
+                last_name: document.getElementById('reg-last-name').value,
+                email: document.getElementById('reg-email').value,
+                role: document.getElementById('reg-role').value,
+                password: document.getElementById('reg-password').value,
+                password_confirm: document.getElementById('reg-password-confirm').value
+            })
+        });
+        handleAuthSuccess(res);
+        showToast('Account created successfully!');
+    } catch (err) { }
+    finally {
+        btn.textContent = 'Create Account'; btn.disabled = false;
+    }
+});
+
+function handleAuthSuccess(res) {
+    state.token = res.tokens.access;
+    state.user = res.user;
+    localStorage.setItem('access_token', res.tokens.access);
+    localStorage.setItem('refresh_token', res.tokens.refresh);
+    localStorage.setItem('user', JSON.stringify(res.user));
+
+    if (state.user) {
+        els.welcomeUser.textContent = `Welcome, ${state.user.first_name}!`;
+    }
+
+    showScreen(els.dashboardSection);
+    loadQuizzes();
+}
+
 function logout() {
+    const refreshToken = localStorage.getItem('refresh_token');
+    if (state.token && refreshToken) {
+        apiFetch('/auth/logout/', {
+            method: 'POST',
+            body: JSON.stringify({ refresh: refreshToken })
+        }).catch(() => { });
+    }
     state.token = null;
-    localStorage.removeItem('access_token');
+    state.user = null;
+    localStorage.clear();
     showScreen(els.loginSection);
 }
 els.logoutBtn.addEventListener('click', logout);
@@ -122,7 +196,7 @@ async function loadQuizzes() {
     els.quizzesGrid.innerHTML = '<div class="text-center w-100" style="grid-column: 1/-1;">Loading quizzes...</div>';
     try {
         const data = await apiFetch('/quizzes/');
-        state.quizzes = data.results || data; // handle paginated or direct array
+        state.quizzes = data.results || data;
         renderQuizzes();
     } catch (err) { }
 }
@@ -182,12 +256,10 @@ els.createQuizForm.addEventListener('submit', async (e) => {
 // Quiz Player Logic
 async function startQuiz(quizId, quizTitle) {
     try {
-        // Start attempt
         const attempt = await apiFetch(`/attempts/start/${quizId}/`, { method: 'POST' });
         state.activeAttemptId = attempt.id;
         state.activeQuizId = quizId;
 
-        // Fetch questions
         state.questions = await apiFetch(`/quizzes/${quizId}/questions/`);
         state.currentQuestionIndex = 0;
 
@@ -209,15 +281,14 @@ function renderQuestion() {
     els.nextQuestionBtn.disabled = true;
 
     const q = state.questions[state.currentQuestionIndex];
+    if (!q) return;
     const total = state.questions.length;
 
-    // Update progress
     els.questionTracker.textContent = `Question ${state.currentQuestionIndex + 1} of ${total}`;
     els.progressFill.style.width = `${((state.currentQuestionIndex) / total) * 100}%`;
 
     els.questionText.textContent = q.question_text;
 
-    // Render options
     els.optionsContainer.innerHTML = '';
     ['a', 'b', 'c', 'd'].forEach(optLetter => {
         const btn = document.createElement('button');
@@ -235,10 +306,9 @@ function renderQuestion() {
 }
 
 async function handleAnswer(questionId, selectedOption, btnElement) {
-    if (state.isAnswering) return; // prevent multiple clicks
+    if (state.isAnswering) return;
     state.isAnswering = true;
 
-    // Highlight selection
     Array.from(els.optionsContainer.children).forEach(b => b.style.pointerEvents = 'none');
     btnElement.classList.add('selected');
 
@@ -248,7 +318,6 @@ async function handleAnswer(questionId, selectedOption, btnElement) {
             body: JSON.stringify({ question_id: questionId, selected_option: selectedOption })
         });
 
-        // Show correct/wrong
         if (res.is_correct) {
             btnElement.classList.replace('selected', 'correct');
             showToast('Correct! \u2728');
@@ -270,7 +339,6 @@ els.nextQuestionBtn.addEventListener('click', async () => {
         state.currentQuestionIndex++;
         renderQuestion();
     } else {
-        // Submit Quiz
         try {
             els.nextQuestionBtn.textContent = 'Submitting...';
             els.nextQuestionBtn.disabled = true;

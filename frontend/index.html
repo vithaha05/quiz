@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
     <!-- Notification Toast -->
@@ -19,8 +21,8 @@
             <p class="text-center subtitle mb-lg">Log in to unleash intelligent learning</p>
             <form id="login-form">
                 <div class="input-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" value="admin" required>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="e.g. admin@example.com" required>
                 </div>
                 <div class="input-group">
                     <label for="password">Password</label>
@@ -28,6 +30,56 @@
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Sign In</button>
             </form>
+            <p class="text-center mt-md" style="font-size: 0.9rem;">
+                Don't have an account? <a href="#" id="to-register-btn" class="gradient-text"
+                    style="font-weight: 600;">Sign Up</a>
+            </p>
+        </div>
+    </main>
+
+    <!-- Register Section -->
+    <main id="register-section" class="screen flex-center hidden">
+        <div class="glass-card login-card fade-in">
+            <h1 class="gradient-text text-center">Join AI Quiz App</h1>
+            <p class="text-center subtitle mb-lg">Create your account to start learning</p>
+            <form id="register-form">
+                <div class="layout-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="input-group">
+                        <label for="reg-first-name">First Name</label>
+                        <input type="text" id="reg-first-name" placeholder="John" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="reg-last-name">Last Name</label>
+                        <input type="text" id="reg-last-name" placeholder="Doe" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="reg-email">Email</label>
+                    <input type="email" id="reg-email" placeholder="john@example.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="reg-role">Role</label>
+                    <select id="reg-role" required>
+                        <option value="student">Student</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="layout-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="input-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="reg-password-confirm">Confirm</label>
+                        <input type="password" id="reg-password-confirm" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Create Account</button>
+            </form>
+            <p class="text-center mt-md" style="font-size: 0.9rem;">
+                Already have an account? <a href="#" id="to-login-btn" class="gradient-text"
+                    style="font-weight: 600;">Sign In</a>
+            </p>
         </div>
     </main>
 
@@ -35,7 +87,10 @@
     <main id="dashboard-section" class="screen hidden fade-in">
         <header class="glass-nav">
             <h2 class="gradient-text">Quiz Dashboard</h2>
-            <button id="logout-btn" class="btn btn-danger">Log Out</button>
+            <div class="flex-center" style="gap: 1.5rem;">
+                <span id="welcome-user" class="subtitle" style="font-weight: 600; color: var(--text-primary);"></span>
+                <button id="logout-btn" class="btn btn-danger">Log Out</button>
+            </div>
         </header>
 
         <div class="container layout-grid mt-lg">
@@ -112,4 +167,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>
