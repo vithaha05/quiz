@@ -1,4 +1,6 @@
+import logging
 from rest_framework import viewsets, permissions, status, filters, serializers
+from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.core.cache import cache
@@ -7,6 +9,14 @@ from .models import Quiz, Question
 from .serializers import QuizSerializer, QuestionSerializer, QuizCreateSerializer
 from .services.ai_service import AIService
 from .throttles import AIQuizCreationThrottle
+
+logger = logging.getLogger(__name__)
+
+class AIServiceUnavailable(APIException):
+    """Raised when AI question generation fails — returns 503."""
+    status_code = 503
+    default_detail = "The AI service is temporarily unavailable. Please try again later."
+    default_code = "ai_service_unavailable"
 
 class IsAdminUser(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -70,12 +80,12 @@ class QuizViewSet(viewsets.ModelViewSet):
             else:
                 cache.clear()  # Fallback for LocMemCache in dev
         except Exception as e:
-            # Cleanup quiz if generation fails
+            # Cleanup quiz if AI generation fails — no partial quiz left in DB
             quiz.delete()
-            raise serializers.ValidationError({
-                "error": True,
-                "message": f"AI Question Generation failed: {str(e)}",
-            })
+            logger.error(f"AI generation failed for topic '{quiz.topic}': {str(e)}")
+            raise AIServiceUnavailable(
+                detail=f"AI Question Generation failed. Please try again later."
+            )
 
     def perform_destroy(self, instance):
         instance.is_active = False
