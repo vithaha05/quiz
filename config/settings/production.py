@@ -5,12 +5,11 @@ DEBUG = False
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 
-# Database configuration for Render (using django-environ's db() which is already in base.py)
-# The DATABASE_URL env var is already handled in base.py via env.db()
-# No need to override unless you need special conn settings:
+# Database configuration — DATABASE_URL must be set in Render's environment variables
+# Fall back to SQLite only as a safety net (should never happen in real production)
 DATABASES = {
     'default': {
-        **env.db('DATABASE_URL'),
+        **env.db('DATABASE_URL', default='sqlite:///db.sqlite3'),
         'CONN_MAX_AGE': 600,
         'CONN_HEALTH_CHECKS': True,
     }
