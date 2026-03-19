@@ -13,14 +13,26 @@ class AttemptViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return QuizAttempt.objects.filter(user=self.request.user).prefetch_related('answers')
 
-    @decorators.action(detail=False, methods=['post'], url_path='start/(?P<quiz_id>\d+)')
+    @decorators.action(detail=False, methods=['post'], url_path='start/(?P<quiz_id>[0-9]+)')
     def start(self, request, quiz_id=None):
         try:
             quiz = Quiz.objects.get(id=quiz_id, is_active=True)
-            attempt = QuizAttempt.objects.create(user=request.user, quiz=quiz)
-            return Response(QuizAttemptSerializer(attempt).data, status=status.HTTP_201_CREATED)
         except Quiz.DoesNotExist:
             return Response({"error": True, "message": "Quiz not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Prevent duplicate active attempts on the same quiz
+        existing_attempt = QuizAttempt.objects.filter(
+            user=request.user, quiz=quiz, status='in_progress'
+        ).first()
+        if existing_attempt:
+            return Response({
+                "error": True,
+                "message": "You already have an active attempt for this quiz. Please submit it first.",
+                "attempt_id": existing_attempt.id
+            }, status=status.HTTP_409_CONFLICT)
+
+        attempt = QuizAttempt.objects.create(user=request.user, quiz=quiz)
+        return Response(QuizAttemptSerializer(attempt).data, status=status.HTTP_201_CREATED)
 
     @decorators.action(detail=True, methods=['post'])
     def answer(self, request, pk=None):

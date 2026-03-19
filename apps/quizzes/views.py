@@ -6,6 +6,7 @@ from django.db import transaction
 from .models import Quiz, Question
 from .serializers import QuizSerializer, QuestionSerializer, QuizCreateSerializer
 from .services.ai_service import AIService
+from .throttles import AIQuizCreationThrottle
 
 class IsAdminUser(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -22,6 +23,11 @@ class QuizViewSet(viewsets.ModelViewSet):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
             return [IsAdminUser()]
         return [permissions.IsAuthenticated()]
+
+    def get_throttles(self):
+        if self.action == 'create':
+            return [AIQuizCreationThrottle()]
+        return super().get_throttles()
 
     def list(self, request, *args, **kwargs):
         # Cache for 5 minutes

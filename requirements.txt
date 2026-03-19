@@ -9,4 +9,4 @@ google-generativeai
 gunicorn
 redis
 django-redis
-python-dotenv
+whitenoise
