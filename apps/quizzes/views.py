@@ -23,11 +23,17 @@ class IsAdminUser(permissions.BasePermission):
         return request.user and request.user.is_authenticated and request.user.role == 'admin'
 
 class QuizViewSet(viewsets.ModelViewSet):
-    queryset = Quiz.objects.filter(is_active=True).select_related('created_by').prefetch_related('questions')
     serializer_class = QuizSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title', 'topic']
     ordering_fields = ['created_at', 'difficulty']
+
+    def get_queryset(self):
+        # Users only see quizzes they created
+        return Quiz.objects.filter(
+            created_by=self.request.user, 
+            is_active=True
+        ).select_related('created_by').prefetch_related('questions')
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:

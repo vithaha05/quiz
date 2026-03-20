@@ -153,8 +153,9 @@ els.registerForm.addEventListener('submit', async (e) => {
                 password_confirm: document.getElementById('reg-password-confirm').value
             })
         });
-        handleAuthSuccess(res);
-        showToast('Account created successfully!');
+        showToast('Account created successfully! Please sign in.');
+        els.registerForm.reset();
+        showScreen(els.loginSection);
     } catch (err) { }
     finally {
         btn.textContent = 'Create Account'; btn.disabled = false;
@@ -186,8 +187,16 @@ function logout() {
     }
     state.token = null;
     state.user = null;
+    state.quizzes = [];
+    state.activeAttemptId = null;
     localStorage.clear();
+    
+    // Physical reset of ALL forms and grids
+    document.querySelectorAll('form').forEach(f => f.reset());
+    els.quizzesGrid.innerHTML = '';
+    
     showScreen(els.loginSection);
+    showToast('Logged out successfully');
 }
 els.logoutBtn.addEventListener('click', logout);
 
