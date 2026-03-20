@@ -219,7 +219,7 @@ function renderQuizzes() {
                 <div class="quiz-meta mb-md">
                     <span class="badge ${quiz.difficulty.toLowerCase()}">${quiz.difficulty}</span>
                     <span class="badge">${quiz.question_count} Qs</span>
-                    <span class="badge">By ${quiz.created_by_username || 'Admin'}</span>
+                    <span class="badge">By ${quiz.created_by_email || 'Admin'}</span>
                 </div>
             </div>
             <button class="btn btn-primary w-100 mt-md" onclick="startQuiz(${quiz.id}, '${quiz.title.replace(/'/g, "\\'")}')">Take Quiz</button>

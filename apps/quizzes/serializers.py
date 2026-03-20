@@ -8,11 +8,11 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class QuizSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
-    created_by_username = serializers.CharField(source='created_by.username', read_only=True)
+    created_by_email = serializers.CharField(source='created_by.email', read_only=True)
 
     class Meta:
         model = Quiz
-        fields = ('id', 'title', 'topic', 'difficulty', 'question_count', 'created_by_username', 'is_active', 'ai_provider', 'created_at', 'updated_at', 'questions')
+        fields = ('id', 'title', 'topic', 'difficulty', 'question_count', 'created_by_email', 'is_active', 'ai_provider', 'created_at', 'updated_at', 'questions')
         read_only_fields = ('id', 'created_by', 'ai_provider', 'created_at', 'updated_at')
 
 class QuizCreateSerializer(serializers.ModelSerializer):

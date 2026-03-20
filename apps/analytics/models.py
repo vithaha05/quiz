@@ -11,4 +11,4 @@ class UserAnalytics(models.Model):
     correct_answers = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return f"Analytics for {self.user.username}"
+        return f"Analytics for {self.user.email}"
