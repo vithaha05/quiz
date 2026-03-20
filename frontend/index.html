@@ -4,162 +4,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Quiz App</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Quiz &mdash; AI Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-    <!-- Notification Toast -->
     <div id="toast" class="toast hidden"></div>
 
     <!-- Login Section -->
     <main id="login-section" class="screen flex-center">
-        <div class="glass-card login-card fade-in">
-            <h1 class="gradient-text text-center">AI Quiz App</h1>
-            <p class="text-center subtitle mb-lg">Log in to unleash intelligent learning</p>
-            <form id="login-form">
-                <div class="input-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="john@example.com" required>
-                </div>
-                <div class="input-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Sign In</button>
-            </form>
-            <p class="text-center mt-md" style="font-size: 0.9rem;">
-                Don't have an account? <a href="#" id="to-register-btn" class="gradient-text"
-                    style="font-weight: 600;">Sign Up</a>
-            </p>
+        <div class="layout-grid w-100">
+            <div class="login-card fade-in">
+                <h1 class="fade-in">Hi.<br>Ready?</h1>
+                <p class="subtitle mb-lg">Log in to your intelligence profile to begin the session.</p>
+                
+                <form id="login-form">
+                    <div class="input-group">
+                        <label>Identity (Email)</label>
+                        <input type="email" id="email" placeholder="email@address.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Secret (Password)</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Establish Session</button>
+                    <button type="button" id="to-register-btn" class="btn">New ID</button>
+                </form>
+            </div>
         </div>
     </main>
 
     <!-- Register Section -->
     <main id="register-section" class="screen flex-center hidden">
-        <div class="glass-card login-card fade-in">
-            <h1 class="gradient-text text-center">Join AI Quiz App</h1>
-            <p class="text-center subtitle mb-lg">Create your account to start learning</p>
-            <form id="register-form">
-                <div class="layout-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="input-group">
-                        <label for="reg-first-name">First Name</label>
-                        <input type="text" id="reg-first-name" placeholder="John" required>
+        <div class="layout-grid w-100">
+            <div class="login-card fade-in">
+                <h1>Join.</h1>
+                <p class="subtitle mb-lg">Create a new intelligence record in our database.</p>
+                <form id="register-form">
+                    <div class="layout-grid" style="gap: 1rem; margin-bottom:0;">
+                        <div class="input-group" style="grid-column: 1/7;">
+                            <label>First Name</label>
+                            <input type="text" id="reg-first-name" required>
+                        </div>
+                        <div class="input-group" style="grid-column: 7/13;">
+                            <label>Last Name</label>
+                            <input type="text" id="reg-last-name" required>
+                        </div>
                     </div>
                     <div class="input-group">
-                        <label for="reg-last-name">Last Name</label>
-                        <input type="text" id="reg-last-name" placeholder="Doe" required>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label for="reg-email">Email</label>
-                    <input type="email" id="reg-email" placeholder="john@example.com" required>
-                </div>
-                <div class="input-group">
-                    <label for="reg-role">Role</label>
-                    <select id="reg-role" required>
-                        <option value="student">Student</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                </div>
-                <div class="layout-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="input-group">
-                        <label for="reg-password">Password</label>
-                        <input type="password" id="reg-password" required>
+                        <label>Email Address</label>
+                        <input type="email" id="reg-email" required>
                     </div>
                     <div class="input-group">
-                        <label for="reg-password-confirm">Confirm</label>
-                        <input type="password" id="reg-password-confirm" required>
+                        <label>Primary Role</label>
+                        <select id="reg-role" required>
+                            <option value="student">Student</option>
+                            <option value="admin">Admin</option>
+                        </select>
                     </div>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Create Account</button>
-            </form>
-            <p class="text-center mt-md" style="font-size: 0.9rem;">
-                Already have an account? <a href="#" id="to-login-btn" class="gradient-text"
-                    style="font-weight: 600;">Sign In</a>
-            </p>
+                    <div class="layout-grid" style="gap: 1rem; margin-bottom:0;">
+                        <div class="input-group" style="grid-column: 1/7;">
+                            <label>Password</label>
+                            <input type="password" id="reg-password" required>
+                        </div>
+                        <div class="input-group" style="grid-column: 7/13;">
+                            <label>Confirm</label>
+                            <input type="password" id="reg-password-confirm" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register Identity</button>
+                    <button type="button" id="to-login-btn" class="btn">Back to Sign In</button>
+                </form>
+            </div>
         </div>
     </main>
 
     <!-- Dashboard Section -->
     <main id="dashboard-section" class="screen hidden fade-in">
-        <header class="glass-nav">
-            <h2 class="gradient-text">Quiz Dashboard</h2>
-            <div class="flex-center" style="gap: 1.5rem;">
-                <span id="welcome-user" class="subtitle" style="font-weight: 600; color: var(--text-primary);"></span>
-                <button id="logout-btn" class="btn btn-danger">Log Out</button>
+        <header class="dashboard-header">
+            <div>
+                <h2 id="welcome-user">Welcome.</h2>
+                <p class="subtitle">Your intelligence dashboard.</p>
             </div>
+            <button id="logout-btn" class="btn btn-danger">Terminate session</button>
         </header>
 
-        <div class="container layout-grid mt-lg">
-            <!-- Create Quiz Card -->
-            <aside class="glass-card fade-in-up" style="animation-delay: 0.1s;">
-                <h3 class="mb-md">✨ Create AI Quiz</h3>
+        <div class="layout-grid">
+            <!-- Create Quiz Sidebar (Admin) -->
+            <aside style="grid-column: 1 / 5;">
+                <h3>Initialize.</h3>
+                <p class="subtitle mb-md">Use AI to generate a new quiz module.</p>
                 <form id="create-quiz-form">
                     <div class="input-group">
-                        <label for="quiz-title">Title</label>
-                        <input type="text" id="quiz-title" placeholder="e.g. History 101" required>
+                        <label>Module Title</label>
+                        <input type="text" id="quiz-title" required>
                     </div>
                     <div class="input-group">
-                        <label for="quiz-topic">Topic</label>
-                        <input type="text" id="quiz-topic" placeholder="e.g. World War II" required>
+                        <label>Intel Topic</label>
+                        <input type="text" id="quiz-topic" required>
                     </div>
                     <div class="input-group">
-                        <label for="quiz-difficulty">Difficulty</label>
+                        <label>Difficulty Tier</label>
                         <select id="quiz-difficulty" required>
                             <option value="easy">Easy</option>
-                            <option value="medium">Medium</option>
+                            <option value="medium" selected>Medium</option>
                             <option value="hard">Hard</option>
                         </select>
                     </div>
                     <div class="input-group">
-                        <label for="quiz-count">Question Count</label>
+                        <label>Data Points (Count)</label>
                         <input type="number" id="quiz-count" min="1" max="10" value="5" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100" id="create-quiz-btn">
-                        Generate with AI
+                    <input type="hidden" id="create-quiz-btn"> <!-- Dummy for JS compat -->
+                    <button type="submit" class="btn btn-primary w-100" id="actual-gen-btn">
+                        Activate AI
                     </button>
                 </form>
             </aside>
 
             <!-- Quiz List -->
-            <section class="glass-card fade-in-up" style="animation-delay: 0.2s;">
+            <section style="grid-column: 6 / 13;">
                 <div class="flex-between mb-md">
-                    <h3>Available Quizzes</h3>
-                    <button id="refresh-quizzes-btn" class="btn btn-secondary">Refresh</button>
+                    <h3>Modules.</h3>
+                    <button id="refresh-quizzes-btn" class="btn" style="padding: 0.5rem 1rem; font-size: 0.7rem;">Refresh</button>
                 </div>
-                <!-- Quizzes Grid -->
                 <div id="quizzes-grid" class="quizzes-grid">
-                    <div class="loading-spinner hidden" id="quizzes-loader"></div>
-                    <!-- Quiz Cards will be injected here -->
+                    <!-- Cards injected here -->
                 </div>
             </section>
         </div>
     </main>
 
-    <!-- Active Quiz Area -->
+    <!-- Active Quiz Player -->
     <main id="active-quiz-section" class="screen hidden fade-in">
-        <header class="glass-nav">
-            <h2 id="active-quiz-title" class="gradient-text">Active Quiz</h2>
-            <button id="quit-quiz-btn" class="btn btn-danger">Quit Attempt</button>
+        <header class="dashboard-header">
+            <h2 id="active-quiz-title">Session Active.</h2>
+            <button id="quit-quiz-btn" class="btn btn-danger">Abort</button>
         </header>
 
-        <div class="container mt-lg flex-center">
-            <div class="glass-card quiz-player fade-in-up">
-                <div class="progress-bar mb-md">
+        <div class="layout-grid">
+            <div class="quiz-player fade-in">
+                <div class="progress-bar">
                     <div class="progress-fill" id="quiz-progress-fill"></div>
                 </div>
-                <p id="question-tracker" class="subtitle mb-sm">Question 1 of 5</p>
-                <h3 id="question-text" class="mb-lg">Loading question...</h3>
+                <div style="font-family: var(--font-mono); font-size: 0.8rem; margin-bottom: 2rem;">
+                    <span id="question-tracker">01 / 05</span>
+                </div>
+                <h1 id="question-text" style="font-size: 2.5rem; margin-bottom: 4rem;">Loading...</h1>
 
-                <div id="options-container" class="options-grid mb-lg">
-                    <!-- Options injected here -->
+                <div id="options-container" class="options-grid">
+                    <!-- Options -->
                 </div>
 
                 <div class="flex-end">
-                    <button id="next-question-btn" class="btn btn-primary" disabled>Next</button>
+                    <button id="next-question-btn" class="btn btn-primary" disabled>Next Step</button>
                 </div>
             </div>
         </div>

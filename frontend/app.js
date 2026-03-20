@@ -29,7 +29,7 @@ const els = {
     welcomeUser: document.getElementById('welcome-user'),
 
     createQuizForm: document.getElementById('create-quiz-form'),
-    createQuizBtn: document.getElementById('create-quiz-btn'),
+    createQuizBtn: document.getElementById('actual-gen-btn'),
     refreshQuizzesBtn: document.getElementById('refresh-quizzes-btn'),
     quizzesGrid: document.getElementById('quizzes-grid'),
 
@@ -38,7 +38,7 @@ const els = {
     questionTracker: document.getElementById('question-tracker'),
     questionText: document.getElementById('question-text'),
     optionsContainer: document.getElementById('options-container'),
-    nextQuestionBtn: document.getElementById('next-question-btn'),
+    next_btn: document.getElementById('next-question-btn'),
     progressFill: document.getElementById('quiz-progress-fill')
 };
 
@@ -287,14 +287,14 @@ els.quitQuizBtn.addEventListener('click', () => {
 
 function renderQuestion() {
     state.isAnswering = false;
-    els.nextQuestionBtn.disabled = true;
+    els.next_btn.disabled = true;
 
     const q = state.questions[state.currentQuestionIndex];
     if (!q) return;
     const total = state.questions.length;
 
-    els.questionTracker.textContent = `Question ${state.currentQuestionIndex + 1} of ${total}`;
-    els.progressFill.style.width = `${((state.currentQuestionIndex) / total) * 100}%`;
+    els.questionTracker.textContent = `${String(state.currentQuestionIndex + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+    els.progressFill.style.width = `${((state.currentQuestionIndex + 1) / total) * 100}%`;
 
     els.questionText.textContent = q.question_text;
 
@@ -308,9 +308,9 @@ function renderQuestion() {
     });
 
     if (state.currentQuestionIndex === total - 1) {
-        els.nextQuestionBtn.textContent = 'Submit Quiz';
+        els.next_btn.textContent = 'Finish';
     } else {
-        els.nextQuestionBtn.textContent = 'Next Question';
+        els.next_btn.textContent = 'Next Step';
     }
 }
 
@@ -335,7 +335,7 @@ async function handleAnswer(questionId, selectedOption, btnElement) {
             showToast('Incorrect \u274c', true);
         }
 
-        els.nextQuestionBtn.disabled = false;
+        els.next_btn.disabled = false;
     } catch (err) {
         state.isAnswering = false;
         Array.from(els.optionsContainer.children).forEach(b => b.style.pointerEvents = 'auto');
@@ -343,14 +343,14 @@ async function handleAnswer(questionId, selectedOption, btnElement) {
     }
 }
 
-els.nextQuestionBtn.addEventListener('click', async () => {
+els.next_btn.addEventListener('click', async () => {
     if (state.currentQuestionIndex < state.questions.length - 1) {
         state.currentQuestionIndex++;
         renderQuestion();
     } else {
         try {
-            els.nextQuestionBtn.textContent = 'Submitting...';
-            els.nextQuestionBtn.disabled = true;
+            els.next_btn.textContent = 'Submitting...';
+            els.next_btn.disabled = true;
             const res = await apiFetch(`/attempts/${state.activeAttemptId}/submit/`, { method: 'POST' });
 
             alert(`Quiz completed! Your score: ${res.score}%`);
