@@ -4,9 +4,11 @@
     --card-border: #1a1a1a;
     --text-primary: #ffffff;
     --text-secondary: #888888;
-    --accent-blue: #0076FF;
-    --accent-pink: #FF0080;
-    --accent-cyan: #50E3C2;
+    --accent-blue: #0070f3;
+    --accent-pink: #ff0080;
+    --accent-cyan: #00dfd8;
+    --accent-yellow: #f0e900;
+    --nana-gradient: linear-gradient(90deg, var(--accent-blue), var(--accent-pink), var(--accent-cyan));
     --danger: #ff4d4d;
     --success: #00ff88;
     --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
@@ -186,7 +188,8 @@ input:focus, select:focus {
 
 .dashboard-header {
     margin-bottom: 6rem;
-    border-bottom: 1px solid var(--card-border);
+    border-bottom: 2px solid transparent;
+    border-image: var(--nana-gradient) 1;
     padding-bottom: 2rem;
     display: flex;
     justify-content: space-between;
@@ -209,6 +212,8 @@ input:focus, select:focus {
 .quiz-item-card:hover {
     padding-left: 1rem;
     border-bottom-width: 2px;
+    border-bottom-color: var(--accent-cyan);
+    box-shadow: 0 10px 30px -15px var(--accent-pink);
 }
 
 .quiz-meta {
@@ -242,7 +247,8 @@ input:focus, select:focus {
 
 .progress-fill {
     height: 100%;
-    background: white;
+    background: var(--nana-gradient);
+    box-shadow: 0 0 20px var(--accent-pink);
     transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -264,8 +270,9 @@ input:focus, select:focus {
 }
 
 .option-item:hover {
-    border-color: white;
+    border-color: var(--accent-blue);
     color: white;
+    box-shadow: inset 0 0 15px rgba(0, 112, 243, 0.1);
 }
 
 .option-item.selected {
