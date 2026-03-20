@@ -2,6 +2,16 @@
 
 A production-ready Quiz API built with Django REST Framework, JWT authentication, and AI-powered question generation via the Groq API (LLaMA 3.1).
 
+## 🚀 Live Deployment
+| Service | URL |
+|---------|-----|
+| **Frontend App** | https://quiz-frontend-xsrw.onrender.com |
+| **Backend API** | https://quiz-api-suta.onrender.com |
+| **Swagger Docs** | https://quiz-api-suta.onrender.com/api/docs/swagger/ |
+| **Redoc Docs** | https://quiz-api-suta.onrender.com/api/docs/redoc/ |
+| **GitHub Repo** | https://github.com/vithaha05/quiz |
+
+
 ## Tech Stack
 - **Framework**: Django 4.x + Django REST Framework
 - **Database**: PostgreSQL (Render) / SQLite (local dev)
