@@ -39,7 +39,8 @@ const els = {
     questionText: document.getElementById('question-text'),
     optionsContainer: document.getElementById('options-container'),
     next_btn: document.getElementById('next-question-btn'),
-    progressFill: document.getElementById('quiz-progress-fill')
+    progressFill: document.getElementById('quiz-progress-fill'),
+    customCursor: document.getElementById('custom-cursor')
 };
 
 // Utility: Show Toast
@@ -357,6 +358,31 @@ els.next_btn.addEventListener('click', async () => {
             showScreen(els.dashboardSection);
             loadQuizzes();
         } catch (err) { }
+    }
+});
+
+// Custom Cursor Logic
+document.addEventListener('mousemove', (e) => {
+    if (els.customCursor) {
+        els.customCursor.style.left = e.clientX + 'px';
+        els.customCursor.style.top = e.clientY + 'px';
+    }
+});
+
+// Cursor Hover Effects
+document.addEventListener('mouseover', (e) => {
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A' || e.target.onclick) {
+        els.customCursor.style.width = '60px';
+        els.customCursor.style.height = '60px';
+        els.customCursor.style.background = 'rgba(255, 255, 255, 0.1)';
+    }
+});
+
+document.addEventListener('mouseout', (e) => {
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A' || e.target.onclick) {
+        els.customCursor.style.width = '25px';
+        els.customCursor.style.height = '25px';
+        els.customCursor.style.background = 'rgba(255, 255, 255, 0.2)';
     }
 });
 

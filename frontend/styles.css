@@ -28,7 +28,24 @@ body {
     font-family: var(--font-sans);
     line-height: 1.6;
     overflow-x: hidden;
+    cursor: none; /* Hide real cursor */
     -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Cursor Circle */
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 25px;
+    height: 25px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease-out;
 }
 
 /* Vertical Grid Lines purely for aesthetic */
@@ -126,16 +143,18 @@ input:focus, select:focus {
 /* Buttons */
 .btn {
     display: inline-block;
-    padding: 1.25rem 2.5rem;
-    font-size: 0.9rem;
+    padding: 1rem 2.5rem;
+    font-size: 0.8rem;
     font-weight: 700;
-    text-transform: uppercase;
+    text-transform: lowercase;
     letter-spacing: 0.05em;
-    cursor: pointer;
+    cursor: none;
     transition: all 0.3s ease;
     border: 1px solid white;
+    border-radius: 50px; /* Pill Shape */
     background: transparent;
     color: white;
+    margin-right: 0.5rem;
 }
 
 .btn:hover {
@@ -333,3 +352,19 @@ input:focus, select:focus {
     .login-card, .quiz-player { margin-bottom: 2rem; }
     .options-grid { grid-template-columns: 1fr; }
 }
+
+.nana-logo {
+    display: flex;
+}
+
+.nana-c {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: inline-block;
+    mix-blend-mode: screen;
+}
+
+.nana-c.blue { background: #0070f3; }
+.nana-c.pink { background: #ff0080; margin-left: -25px; }
+.nana-c.cyan { background: #00dfd8; margin-left: -25px; }
