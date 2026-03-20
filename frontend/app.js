@@ -1,4 +1,4 @@
-const API_URL = 'http://127.0.0.1:8000/api';
+const API_URL = 'https://quiz-api-suta.onrender.com/api';
 
 // State
 let state = {
