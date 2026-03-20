@@ -141,6 +141,12 @@ input:focus, select:focus {
     border-bottom-color: white;
 }
 
+/* Force dropdown options to be readable (browser renders native dropdown on white bg) */
+select option {
+    background: #ffffff;
+    color: #000000;
+}
+
 /* Buttons */
 .btn {
     display: inline-block;
