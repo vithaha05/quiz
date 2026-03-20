@@ -64,27 +64,30 @@ async function apiFetch(endpoint, options = {}) {
         const isJson = res.headers.get('content-type')?.includes('application/json');
         const rData = isJson ? await res.json() : null;
 
-        if (res.status === 401 && state.token) {
+        if (res.status === 401) {
+            if (state.token && !options.isInit) {
+                showToast('session expired. please login again.', true);
+            }
             logout();
-            showToast('Session expired. Please login again.', true);
             return null;
         }
 
         if (!res.ok || (rData && rData.error)) {
-            // Handle nested validation errors for registration
             let msg = rData?.message || rData?.detail || `Error ${res.status}`;
             if (rData?.details && typeof rData.details === 'object') {
                 const firstField = Object.keys(rData.details)[0];
                 const detailMsg = rData.details[firstField];
                 msg = `${firstField}: ${Array.isArray(detailMsg) ? detailMsg[0] : detailMsg}`;
             }
-            showToast(msg, true);
+            if (!options.isInit) showToast(msg, true);
             throw new Error(msg);
         }
 
         return rData.hasOwnProperty('data') ? rData.data : rData;
     } catch (err) {
-        if (!err.message.includes('Session expired')) {
+        if (err.name === 'TypeError' && err.message.includes('fetch')) {
+            showToast('server is waking up. please wait...', true);
+        } else if (!err.message.includes('Session expired') && !options.isInit) {
             showToast(err.message, true);
         }
         throw err;
@@ -100,13 +103,22 @@ function showScreen(screen) {
     screen.classList.remove('hidden');
 }
 
-function init() {
+async function init() {
     if (state.token) {
-        showScreen(els.dashboardSection);
-        if (state.user) {
-            els.welcomeUser.textContent = `Welcome, ${state.user.first_name}!`;
+        try {
+            // Check if token is basically valid by loading quizzes with isInit flag
+            const data = await apiFetch('/quizzes/', { isInit: true });
+            if (!data) return; // 401 handled by apiFetch -> logout
+
+            showScreen(els.dashboardSection);
+            if (state.user) {
+                els.welcomeUser.textContent = `Welcome, ${state.user.first_name}!`;
+            }
+            state.quizzes = data.results || data;
+            renderQuizzes();
+        } catch (e) {
+            logout(); 
         }
-        loadQuizzes();
     } else {
         showScreen(els.loginSection);
     }
