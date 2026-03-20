@@ -46,10 +46,10 @@ const els = {
 // Utility: Show Toast
 function showToast(message, isError = false) {
     els.toast.textContent = message;
-    els.toast.style.background = isError ? 'var(--danger)' : 'var(--success)';
-    els.toast.style.color = 'white';
+    els.toast.style.borderColor = isError ? 'var(--danger)' : 'var(--success)';
+    els.toast.style.color = isError ? 'var(--danger)' : 'var(--success)';
     els.toast.classList.remove('hidden');
-    setTimeout(() => els.toast.classList.add('hidden'), 3000);
+    setTimeout(() => els.toast.classList.add('hidden'), 3500);
 }
 
 // Utility: Auth Fetch
