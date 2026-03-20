@@ -21,7 +21,7 @@ class QuizAttempt(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.user.username} - {self.quiz.title} ({self.status})"
+        return f"{self.user.email} - {self.quiz.title} ({self.status})"
 
 class AttemptAnswer(models.Model):
     OPTION_CHOICES = (
