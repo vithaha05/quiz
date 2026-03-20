@@ -58,11 +58,11 @@ A production-ready Quiz API built with Django REST Framework, JWT authentication
 ### Quizzes
 | Method | URL | Auth | Description |
 |--------|-----|------|-------------|
-| POST | `/api/quizzes/` | Admin | Create quiz + AI-generate questions |
-| GET | `/api/quizzes/` | JWT | List active quizzes (paginated) |
+| POST | `/api/quizzes/` | JWT | Create quiz + AI-generate questions (scoped to your account) |
+| GET | `/api/quizzes/` | JWT | List your quizzes (paginated, data-isolated) |
 | GET | `/api/quizzes/{id}/` | JWT | Quiz detail |
-| PATCH | `/api/quizzes/{id}/` | Admin | Update quiz metadata |
-| DELETE | `/api/quizzes/{id}/` | Admin | Soft delete (deactivate) quiz |
+| PATCH | `/api/quizzes/{id}/` | JWT (owner) | Update your own quiz metadata |
+| DELETE | `/api/quizzes/{id}/` | JWT (owner) | Soft delete (deactivate) your quiz |
 | GET | `/api/quizzes/{id}/questions/` | JWT | List questions for a quiz |
 
 ### Attempts
